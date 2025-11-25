@@ -1,0 +1,12 @@
+*-debug.log
+*-error.log
+.env.test
+/.nyc_output
+/data/**/*.js
+/dist
+/lib
+/tmp
+node_modules
+.hint.txt
+.json-requests.js
+.vscode

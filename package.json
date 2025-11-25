@@ -1,0 +1,36 @@
+{
+  "name": "shipglobaltest2",
+  "description": "This is an example shipglobal",
+  "version": "1.0.0",
+  "author": "shipglobal",
+  "appId": "b59cb33a-ae09-45e3-85c7-9b2dd0257fc5",
+  "connect": {
+    "version": 4
+  },
+  "devDependencies": {
+    "@shipengine/connect": "^4.9.3",
+    "@types/node": "^24.10.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "ShipEngine",
+    "carrier app"
+  ],
+  "main": "lib/index.js",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "start": "connect start",
+    "test": "exit 0",
+    "watch": "tsc --watch"
+  },
+  "types": "lib/index.ts",
+  "dependencies": {
+    "@shipengine/connect-carrier-api": "^4.16.11",
+    "@shipengine/connect-runtime": "^4.10.2",
+    "xml2js": "^0.6.2"
+  }
+}

@@ -1,0 +1,45 @@
+
+// 'https://community.shipstation.com/t5/Carrier-Integrations/Integration-with-Shiprocket/td-p/27105'
+// 'https://www.shipstation.com/partnership-options/
+
+
+
+
+Integration Process for New Carriers
+Your client will need to work directly with the ShipStation/ShipEngine team to build a custom integration via the ShipEngine Connect platform. This process involves several technical steps:
+Become a Partner: The carrier company should contact the ShipStation/ShipEngine Partners and Integrations team through the ShipStation Partner page (or the ShipEngine equivalent) to express interest and initiate the partnership process.
+
+
+
+https://www.shipengine.com/docs/carriers/connect/
+
+Using Your Carrier Accounts
+In addition to the ShipStation carriers that are included with your account, you can also connect your own carrier accounts so you can ship with your own negotiated rates with ShipStation API.
+
+You can connect your accounts either programmatically with the /v1/connections endpoint or via your account Dashboard.
+
+Requirements
+
+To connect your own carrier accounts to ShipStation API:
+
+You must be on an Advanced Plan or higher.
+You must have an account already set up with each carrier you want to connect to ShipStation API.
+You must connect your carrier accounts in the Production environment.
+By default, you can only connect one instance of a carrier account. To override this default, include "allow_duplicate_account_number": "true" in your connection request.
+
+
+
+
+
+
+https://connect.shipengine.com/getting-started/publishing/
+
+Self Integrators
+Please contact the ShipEngine Connect Team at connect@shipengine.com and let them know that you are interested in becoming a self integrator.
+
+A signed contract must be in place prior to an integration going live.
+
+
+
+
+https://community.shipstation.com/t5/Carrier-Integrations/Become-a-carrier-on-Shipstation/td-p/29551
