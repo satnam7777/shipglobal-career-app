@@ -63,6 +63,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { GetRatesResponse } from "@shipengine/connect-carrier-api";
 import {
   BillingCategories,
@@ -87,18 +100,22 @@ const convertChargesToRate = (c: any): Rate | undefined => {
   const total = Number(c.ChargeAmount);
   if (!total || total === 0 || isNaN(total)) return undefined;
 
-  let deliveryDate = null;
+  let deliveryDate: string | null = null;
+
+  // Convert "1 day(s)" or "1-6 day(s)" → ISO date
   if (c.TransitTime) {
-    const match = c.TransitTime.match(/\d+/);
+    const match = c.TransitTime.match(/\d+/);   // extract first number
     if (match) {
       deliveryDate = moment().add(Number(match[0]), "days").toISOString();
     }
   }
 
   return {
-    service_code: c.ServiceName,
-    estimated_delivery_datetime: deliveryDate,
+    service_code: c.ServiceCode,
+    estimated_delivery_datetime: deliveryDate,   // ✅ FIXED
     billing_line_items: toBillingItems(total),
+       // service_name:c.ServiceName,
+   // service_type:c.ServiceType,
   };
 };
 

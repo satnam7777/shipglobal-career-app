@@ -30,7 +30,16 @@ export const RegistrationFormSchema = {
     },
 };
 
+// export interface RegistrationData {
+//   accountnumber: string;
+//   password: string;
+// }
+
+
 export interface RegistrationData {
-  accountnumber: string;
-  password: string;
+  username?: string;
+  password?: string;
+  securityKey?: string;
+  authorizeCode?: string;
+  accountnumber?: string;
 }
