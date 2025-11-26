@@ -274,13 +274,11 @@ export const createLabel = async (request: any): Promise<any> => {
   const url = `${BASE_URL}/testshipmentprocess`;
   const xmlBody = buildXML(request);
 
-  console.log(xmlBody, "xml body to shipglobal 0000000000000");
-
   const response = await axios.post(url, xmlBody, {
     headers: { "Content-Type": "application/xml" },
   });
 
-  console.log(response.data, "response data from shipglobal 0000000000000");
+  //console.log(response.data, "response data from shipglobal 0000000000000");
 
   if (response.status !== 200) {
     throw new ExternalServerError("ShipGlobal API Error", {
@@ -292,6 +290,8 @@ export const createLabel = async (request: any): Promise<any> => {
   const parsed = await parseStringPromise(response.data, {
     explicitArray: false,
   });
+
+  //console.log(parsed, "parsed response from shipglobal 1111111111111");
 
   return parsed;
 };

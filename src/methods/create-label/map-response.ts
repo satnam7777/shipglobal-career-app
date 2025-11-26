@@ -63,13 +63,13 @@ import moment = require("moment");
 
 export const mapResponse = (response: any): CreateLabelResponse => {
   const shipment =
-    response?.FFUSACourier?.Shipments?.Shipment ||
+    response?.FFUSACourier?.Shipment ||
     response?.Shipment ||
     {};
 
   const tracking = shipment?.TrackingNumber || "";
   const label = shipment?.Label || "";
-  const charge = Number(shipment?.ServiceCharge || 0);
+  const charge = Number(shipment?.rate || 0);
   const transit = shipment?.TransitTime || "";
 
   let estimatedDate = null;

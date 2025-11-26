@@ -232,109 +232,181 @@
 
 import { CreateLabelRequest } from "@shipengine/connect-carrier-api";
 
-export const mapRequest = (request: CreateLabelRequest): any => {
+// export const mapRequest = (request: CreateLabelRequest): any => {
 
-  console.log(request, '000000000000000000');
-  const p = request.packages?.[0];
-  console.log(p, '0000000000000000000000000');
+//   console.log(request, '000000000000000000');
+//   const p = request.packages?.[0];
+//   console.log(p, '0000000000000000000000000');
 
-  const length = Number(p?.dimension_details?.dimensions_in_inches?.length || 0);
-  const width = Number(p?.dimension_details?.dimensions_in_inches?.width || 0);
-  const height = Number(p?.dimension_details?.dimensions_in_inches?.height || 0);
-  const weightOz = Number(p?.weight_details?.weight_in_ounces || 0);
-  const weightLb = weightOz / 16;
+//   const length = Number(p?.dimension_details?.dimensions_in_inches?.length || 0);
+//   const width = Number(p?.dimension_details?.dimensions_in_inches?.width || 0);
+//   const height = Number(p?.dimension_details?.dimensions_in_inches?.height || 0);
+//   const weightOz = Number(p?.weight_details?.weight_in_ounces || 0);
+//   const weightLb = weightOz / 16;
+
+//   return {
+//     transaction_id: request.transaction_id || "",
+//     service_code: request.service_code || "D",
+//     ship_datetime: request.ship_datetime || new Date().toISOString(),
+//     is_return_label: request.is_return_label || false,
+//     //is_residential: request.ship_to?.residential || false,
+//     packages: request.packages || [],
+//     ship_to: request.ship_to || {},
+//     ship_from: request.ship_from || {},
+//     dropoff_location: request.dropoff_location,
+//     pickup_location: request.pickup_location,
+//     reference: request.reference || "",
+//     metadata: request.metadata || {},
+
+//     FFUSACourier: {
+//       action: "Request",
+//       version: "1.0",
+//       Requestor: {
+//         Username: request.bill_shipping_to?.account_number || request.metadata?.username || "",
+//         Password: request.metadata?.password || "",
+//         SecurityKey: request.metadata?.securityKey || "",
+//         AuthorizeCode: request.metadata?.authorizeCode || "",
+//         AccountNumber: request.bill_shipping_to?.account_number || "",
+//       },
+
+//       Shipments: {
+//         Shipment: {
+//           Details: {
+//             Date: (request.ship_datetime || new Date().toISOString()).substring(0, 10),
+//             ServiceType: request.service_code || "D",
+//             ServiceCode: request.service_code || "",
+//             // CustomerReference: p.label_messages?.reference1 || "",
+//             ShipmentReference: request.reference || "",
+//           },
+
+//           Billing: {
+//             ChargesBillToAccountNumber: request.bill_shipping_to?.account_number || "",
+//             ChargesBillToType: "S",
+//             DutiesBillToAccountNumber: request.bill_shipping_to?.account_number || "",
+//             DutiesBillToType: "S",
+//           },
+
+//           Shipper: {
+//             CompanyName: request.ship_from?.company_name || "",
+//             ContactName: request.ship_from?.name || "",
+//             Address1: request.ship_from?.address_lines?.[0] || "",
+//             Address2: request.ship_from?.address_lines?.[1] || "",
+//             City: request.ship_from?.city_locality || "",
+//             StateProvince: request.ship_from?.state_province || "",
+//             ZipPostal: request.ship_from?.postal_code || "",
+//             Country: request.ship_from?.country_code || "",
+//             Phone: request.ship_from?.phone_number || "",
+//             Email: request.ship_from?.email || "",
+//             Reference: request.ship_from?.address_lines?.[0] || "",
+//           },
+
+//           Receiver: {
+//             CompanyName: request.ship_to?.company_name || "",
+//             ContactName: request.ship_to?.name || "",
+//             Address1: request.ship_to?.address_lines?.[0] || "",
+//             Address2: request.ship_to?.address_lines?.[1] || "",
+//             City: request.ship_to?.city_locality || "",
+//             StateProvince: request.ship_to?.state_province || "",
+//             ZipPostal: request.ship_to?.postal_code || "",
+//             Country: request.ship_to?.country_code || "",
+//             Phone: request.ship_to?.phone_number || "",
+//             Email: request.ship_to?.email || "",
+//             Reference: request.ship_to?.address_lines?.[0] || "",
+//           },
+
+//           Packages: {
+//             NumberOfPackages: request.packages?.length || 0,
+//             Package: {
+//               SequenceNumber: 1,
+//               PackageType: "P",
+//               Weight: weightLb.toFixed(2),
+//               WeightType: "LB",
+//               Length: length,
+//               Width: width,
+//               Height: height,
+//               DimUnit: "IN",
+//               // CustomsValue: p.customs?.amount || p.insured_value?.amount || 0,
+//               Currency: "USD",
+//               // Content: p.content_description || p.customs?.description || "General Merchandise",
+//             },
+//           },
+
+//           LabelType: "PDF",
+//           CommercialInvoice: "False",
+//         },
+//       },
+//     },
+//   };
+// };
+
+
+export const mapRequest = (request: any): any => {
+
+  const courier = request.FFUSACourier || {};
+  const shipment = courier.Shipments?.Shipment || {};
+  const pkg = shipment.packages?.Package || {};
 
   return {
-    transaction_id: request.transaction_id || "",
-    service_code: request.service_code || "D",
-    ship_datetime: request.ship_datetime || new Date().toISOString(),
-    is_return_label: request.is_return_label || false,
-    //is_residential: request.ship_to?.residential || false,
-    packages: request.packages || [],
-    ship_to: request.ship_to || {},
-    ship_from: request.ship_from || {},
-    dropoff_location: request.dropoff_location,
-    pickup_location: request.pickup_location,
-    reference: request.reference || "",
-    metadata: request.metadata || {},
+    transaction_id: request.transaction_id,
+    service_code: request.service_code,
+    ship_datetime: request.ship_datetime,
+    is_return_label: request.is_return_label,
+    is_residential: request.is_residential,
 
     FFUSACourier: {
-      action: "Request",
-      version: "1.0",
+      action: courier.action,
+      version: courier.version,
+
       Requestor: {
-        Username: request.bill_shipping_to?.account_number || request.metadata?.username || "",
-        Password: request.metadata?.password || "",
-        SecurityKey: request.metadata?.securityKey || "",
-        AuthorizeCode: request.metadata?.authorizeCode || "",
-        AccountNumber: request.bill_shipping_to?.account_number || "",
+        Username: courier.Requestor?.Username || "",
+        Password: courier.Requestor?.Password || "",
+        SecurityKey: courier.Requestor?.SecurityKey || "",
+        AuthorizeCode: courier.Requestor?.AuthorizeCode || "",
+        AccountNumber: courier.Requestor?.AccountNumber || "",
       },
 
       Shipments: {
         Shipment: {
           Details: {
-            Date: (request.ship_datetime || new Date().toISOString()).substring(0, 10),
-            ServiceType: request.service_code || "D",
-            ServiceCode: request.service_code || "",
-            // CustomerReference: p.label_messages?.reference1 || "",
-            ShipmentReference: request.reference || "",
+            Date: shipment.Details?.Date || "",
+            ServiceType: shipment.Details?.ServiceType || "",
+            ServiceCode: shipment.Details?.ServiceCode || "",
+            CustomerReference: shipment.Details?.CustomerReference || "",
+            ShipmentReference: shipment.Details?.ShipmentReference || "",
           },
 
           Billing: {
-            ChargesBillToAccountNumber: request.bill_shipping_to?.account_number || "",
-            ChargesBillToType: "S",
-            DutiesBillToAccountNumber: request.bill_shipping_to?.account_number || "",
-            DutiesBillToType: "S",
+            ChargesBillToAccountNumber: shipment.Billing?.ChargesBillToAccountNumber || "",
+            ChargesBillToType: shipment.Billing?.ChargesBillToType || "",
+            DutiesBillToAccountNumber: shipment.Billing?.DutiesBillToAccountNumber || "",
+            DutiesBillToType: shipment.Billing?.DutiesBillToType || "",
           },
 
-          Shipper: {
-            CompanyName: request.ship_from?.company_name || "",
-            ContactName: request.ship_from?.name || "",
-            Address1: request.ship_from?.address_lines?.[0] || "",
-            Address2: request.ship_from?.address_lines?.[1] || "",
-            City: request.ship_from?.city_locality || "",
-            StateProvince: request.ship_from?.state_province || "",
-            ZipPostal: request.ship_from?.postal_code || "",
-            Country: request.ship_from?.country_code || "",
-            Phone: request.ship_from?.phone_number || "",
-            Email: request.ship_from?.email || "",
-            Reference: request.ship_from?.address_lines?.[0] || "",
-          },
+          Shipper: shipment.Shipper || {},
 
-          Receiver: {
-            CompanyName: request.ship_to?.company_name || "",
-            ContactName: request.ship_to?.name || "",
-            Address1: request.ship_to?.address_lines?.[0] || "",
-            Address2: request.ship_to?.address_lines?.[1] || "",
-            City: request.ship_to?.city_locality || "",
-            StateProvince: request.ship_to?.state_province || "",
-            ZipPostal: request.ship_to?.postal_code || "",
-            Country: request.ship_to?.country_code || "",
-            Phone: request.ship_to?.phone_number || "",
-            Email: request.ship_to?.email || "",
-            Reference: request.ship_to?.address_lines?.[0] || "",
-          },
+          Receiver: shipment.Receiver || {},
 
           Packages: {
-            NumberOfPackages: request.packages?.length || 0,
+            NumberOfPackages: shipment.packages?.NumberOfPackages || 1,
             Package: {
-              SequenceNumber: 1,
-              PackageType: "P",
-              Weight: weightLb.toFixed(2),
-              WeightType: "LB",
-              Length: length,
-              Width: width,
-              Height: height,
-              DimUnit: "IN",
-              // CustomsValue: p.customs?.amount || p.insured_value?.amount || 0,
-              Currency: "USD",
-              // Content: p.content_description || p.customs?.description || "General Merchandise",
-            },
+              SequenceNumber: pkg.SequenceNumber,
+              PackageType: pkg.PackageType,
+              Weight: pkg.Weight,
+              WeightType: pkg.WeightType,
+              Length: pkg.Length,
+              Width: pkg.Width,
+              Height: pkg.Height,
+              DimUnit: pkg.DimUnit,
+              CustomsValue: pkg.CustomsValue,
+              Currency: pkg.Currency,
+              Content: pkg.Content
+            }
           },
 
-          LabelType: "PDF",
-          CommercialInvoice: "False",
-        },
-      },
-    },
+          LabelType: shipment.LabelType,
+          CommercialInvoice: shipment.CommercialInvoice
+        }
+      }
+    }
   };
 };
